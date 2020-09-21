@@ -28,9 +28,8 @@ const ContactDetails = ({ route, navigation }) => {
 
     return (
         <View>
-            <Text>Contact Details Page</Text>
             {isLoading && <LoadingIndicator />}
-            {contact ? (
+            {!isLoading && contact ? (
                 <ContactDetailsComponent contact={contact} />
             ) : error ? (
                 <Text>{contactDetailsErrorText(error)}</Text>

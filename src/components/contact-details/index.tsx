@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flexGrow: 1,
         alignItems: 'center',
+        marginTop: 30
     },
     contactImage: {
         height: 300,

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     container: {
         width: '50%',
         alignSelf: 'center',
-        padding: 50
+        marginTop: 30
     },
     contactImage: {
         width: 100,

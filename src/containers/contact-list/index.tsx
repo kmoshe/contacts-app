@@ -46,9 +46,8 @@ const ContactList = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text>Contacts Page</Text>
             {isLoading && <LoadingIndicator />}
-            {contacts?.length > 0 ? (
+            {!isLoading && contacts?.length > 0 ? (
 
                 <FlatList
                     data={contacts}
@@ -84,7 +83,6 @@ export const contactListErrorText = (error: ContactErrorType) => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        flex: 1,
         paddingTop: 30,
     },
     contactContainer: {
