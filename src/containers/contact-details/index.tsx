@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectReducer, useInjectSaga } from '../../utils/redux-injectors';
 import { default as ContactDetailsComponent } from '../../components/contact-details';
@@ -8,11 +9,19 @@ import { selectContact, selectLoading, selectError } from './selectors';
 import LoadingIndicator from '../../components/loading-indicator';
 import { ContactErrorType } from './types';
 import { Text, View, StyleSheet } from "react-native";
+import { RouteProps } from '../app/types'
 
-const ContactDetails = ({ route, navigation }) => {
+type ContactDetailsRouteProp = RouteProp<RouteProps, 'Contact'>;
+
+type Props = {
+    navigation: ContactDetailsRouteProp;
+};
+
+const ContactDetails = ({ navigation }: Props) => {
     useInjectReducer({ key: sliceKey, reducer: reducer });
     useInjectSaga({ key: sliceKey, saga: contactDetailsSaga });
 
+    const route = useRoute<ContactDetailsRouteProp>();
     const contact = useSelector(selectContact);
     const isLoading = useSelector(selectLoading);
     const error = useSelector(selectError);
@@ -22,8 +31,8 @@ const ContactDetails = ({ route, navigation }) => {
         useEffect(effect, []);
     };
     useEffectOnMount(() => {
-        const { uuid } = route.params;
-        dispatch(actions.loadContact(uuid));
+        const { id } = route.params;
+        dispatch(actions.loadContact(id));
     });
 
     return (

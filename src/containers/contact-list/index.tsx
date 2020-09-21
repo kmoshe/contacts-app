@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectReducer, useInjectSaga } from '../../utils/redux-injectors';
+import { StackScreenProps , StackNavigationProp} from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import {View, Text, StyleSheet, TouchableOpacity, VirtualizedList, SafeAreaView, FlatList, Image} from 'react-native';
 import ContactItem from '../../components/contact-item';
 import { sliceKey, reducer, actions } from './slice';
@@ -13,10 +15,12 @@ import {
 } from './selectors';
 import LoadingIndicator from '../../components/loading-indicator';
 import { ContactErrorType } from './types';
-
 import {Contact} from "../../types/Contact";
+import { RouteProps } from '../app/types';
 
-const ContactList = ({navigation}) => {
+type Props = StackScreenProps<RouteProps, 'Contacts'>;
+
+const ContactList = (props: Props) => {
     useInjectReducer({ key: sliceKey, reducer: reducer });
     useInjectSaga({ key: sliceKey, saga: contactListSage });
 
@@ -24,7 +28,7 @@ const ContactList = ({navigation}) => {
     const isLoading = useSelector(selectLoading);
     // const isLoaded = useSelector(selectLoaded);
     const error = useSelector(selectError);
-
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const useEffectOnMount = (effect: React.EffectCallback) => {
         useEffect(effect, []);
@@ -35,13 +39,9 @@ const ContactList = ({navigation}) => {
         }
     });
 
-    const getContactCount = (contacts: Contact[]) => {
-        return contacts.length;
-    }
-
     const onContactPress = (contact: Contact) =>
         navigation.navigate('Contact', {
-            uuid: contact.login.uuid
+            id: contact.login.uuid
         });
 
     return (
