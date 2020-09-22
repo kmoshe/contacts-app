@@ -1,9 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInjectReducer, useInjectSaga } from '../../utils/redux-injectors';
 import { StackScreenProps , StackNavigationProp} from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import {View, Text, StyleSheet, TouchableOpacity, VirtualizedList, SafeAreaView, FlatList, Image} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    VirtualizedList,
+    SafeAreaView,
+    FlatList,
+    Image,
+    RefreshControl,
+    ToastAndroid,
+    Button
+} from 'react-native';
 import ContactItem from '../../components/contact-item';
 import { sliceKey, reducer, actions } from './slice';
 import { contactListSage } from './saga';
@@ -23,6 +35,8 @@ type Props = StackScreenProps<RouteProps, 'Contacts'>;
 const ContactList = (props: Props) => {
     useInjectReducer({ key: sliceKey, reducer: reducer });
     useInjectSaga({ key: sliceKey, saga: contactListSage });
+
+    const [refreshing, setRefreshing] = useState(false);
 
     const contacts = useSelector(selectContacts);
     const isLoading = useSelector(selectLoading);
@@ -44,6 +58,26 @@ const ContactList = (props: Props) => {
             id: contact.login.uuid
         });
 
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        if (contacts.length < 20) {
+            try {
+                dispatch(actions.loadContacts(20));
+                setRefreshing(false)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        else{
+            ToastAndroid.show('No more new data available', ToastAndroid.SHORT);
+            setRefreshing(false)
+        }
+    }, [refreshing]);
+
+    const onRefreshButton = () => {
+        dispatch(actions.loadContacts(20));
+    }
+
     return (
         <View style={styles.container}>
             {isLoading && <LoadingIndicator />}
@@ -61,9 +95,14 @@ const ContactList = (props: Props) => {
                             </TouchableOpacity>
                         </View>
                    )}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
                 </FlatList>
-            ) : error ? (<Text>{contactListErrorText(error)}</Text>) : null }
+            ) : error ? (
+                <View>
+                    <Text>{contactListErrorText(error)}</Text>
+                    <Button title="Refresh" onPress={onRefreshButton}></Button>
+                </View>) : null }
     </View>);
 }
 
