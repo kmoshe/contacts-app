@@ -11,7 +11,7 @@ const ContactItem = ({ contact }: Props) => {
     return (
         <View style={styles.container}>
             <Image source={imageUrl} style={styles.contactImage} />
-            <Text>{contact.name.title} {contact.name.last} {contact.name.first}</Text>
+            <Text testID='contact-name'>{contact.name.title} {contact.name.last} {contact.name.first}</Text>
         </View>
     );
 }

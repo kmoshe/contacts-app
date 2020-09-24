@@ -34,12 +34,12 @@ export interface Login {
 }
 
 export interface Dob {
-  date: Date;
+  date: string;
   age: number;
 }
 
 export interface Registered {
-  date: Date;
+  date: string;
   age: number;
 }
 

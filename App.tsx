@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import 'react-native-gesture-handler';
 import { default as AppContainer } from './src/containers/app';

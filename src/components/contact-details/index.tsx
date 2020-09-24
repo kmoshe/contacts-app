@@ -9,9 +9,9 @@ interface Props {
 const ContactDetails = ({ contact }: Props) => {
     return (
         <View style={styles.container}>
-            <Image style={styles.contactImage} source={{ uri: contact.picture.large }} />
-            <Text style={styles.nameText}>{contact.name.title} {contact.name.last} {contact.name.first}</Text>
-            <Text style={styles.emailText}>{contact.email}</Text>
+            <Image style={styles.contactImage} source={{ uri: contact.picture.large }}  />
+            <Text testID="contact-name" style={styles.nameText}>{contact.name.title} {contact.name.last} {contact.name.first}</Text>
+            <Text testID="contact-email" style={styles.emailText}>{contact.email}</Text>
         </View>
     );
 }
