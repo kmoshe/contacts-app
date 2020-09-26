@@ -5,6 +5,7 @@
 import 'react-native';
 import React from 'react';
 import { Image } from 'react-native'
+import { render, fireEvent } from '@testing-library/react-native';
 import { default as ContactDetails } from '../';
 import { Contact } from '../../../types/Contact';
 
@@ -66,9 +67,8 @@ describe('ContactDetails', () => {
             },
             nat: "IE"
         };
-        const testRenderer = renderer.create(<ContactDetails contact={contact} />);
-        const testInstance = testRenderer.root;
-        expect(testInstance.findByType(Image).props.source.uri).toBe(contact.picture.large);
-        expect(testInstance.findByProps({ testID: 'contact-name'}).props.children).toEqual([contact.name.title, ' ', contact.name.last, ' ', contact.name.first]);
+        const { getByTestId } = render(<ContactDetails contact={contact} />);
+        expect(getByTestId('contact-image').props.source.uri).toBe(contact.picture.large);
+        expect(getByTestId('contact-name').props.children).toEqual([contact.name.title, ' ', contact.name.last, ' ', contact.name.first]);
     });    
 });

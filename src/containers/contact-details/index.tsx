@@ -17,7 +17,7 @@ type Props = {
     navigation: ContactDetailsRouteProp;
 };
 
-const ContactDetails = ({ navigation }: Props) => {
+const ContactDetails = () => {
     useInjectReducer({ key: sliceKey, reducer: reducer });
     useInjectSaga({ key: sliceKey, saga: contactDetailsSaga });
 
